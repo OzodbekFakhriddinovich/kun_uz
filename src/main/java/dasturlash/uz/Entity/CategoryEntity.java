@@ -1,49 +1,55 @@
 package dasturlash.uz.Entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 
-@Entity
-@Table(name = "category")
 
+@Entity
+@Table(name = "Category")
 public class CategoryEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "order_number")
-    private Integer orderNumber;
+    @Column(unique = true)
+    private Integer order_number;
 
-    @Column(name = "name_uz")
+    @Column
     private String nameUz;
 
-    @Column(name = "name_ru")
+    @Column
     private String nameRu;
 
-    @Column(name = "name_en")
+    @Column
     private String nameEn;
 
-    @Column(unique = true)
-    private String key;
+    @Column
+    private Integer categoryKey;
 
+    @Column(columnDefinition = "BOOLEAN DEFAULT TRUE")
     private Boolean visible = true;
 
-    @Column(name = "created_date")
-    private LocalDateTime createdDate = LocalDateTime.now();
+    @Column
+    private LocalDateTime created_date;
 
-
-    public Boolean getVisible() {
-        return visible;
+    public Integer getId() {
+        return id;
     }
 
-    public void setVisible(Boolean visible) {
-        this.visible = visible;
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getOrder_number() {
+        return order_number;
+    }
+
+    public void setOrder_number(Integer order_number) {
+        this.order_number = order_number;
     }
 
     public String getNameUz() {
@@ -52,18 +58,6 @@ public class CategoryEntity {
 
     public void setNameUz(String nameUz) {
         this.nameUz = nameUz;
-    }
-
-
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-
-
-    public void setOrderNumber(Integer orderNumber) {
-        this.orderNumber = orderNumber;
     }
 
     public String getNameRu() {
@@ -82,29 +76,27 @@ public class CategoryEntity {
         this.nameEn = nameEn;
     }
 
-
-
-    public void setKey(String key) {
-        this.key = key;
+    public Integer getCategoryKey() {
+        return categoryKey;
     }
 
-    public LocalDateTime getCreatedDate() {
-        return createdDate;
+    public void setCategoryKey(Integer categoryKey) {
+        this.categoryKey = categoryKey;
     }
 
-    public void setCreatedDate(LocalDateTime createdDate) {
-        this.createdDate = createdDate;
+    public Boolean getVisible() {
+        return visible;
     }
 
-    public String getKey() {
-        return key;
+    public void setVisible(Boolean visible) {
+        this.visible = visible;
     }
 
-    public Integer getId() {
-        return id;
+    public LocalDateTime getCreated_date() {
+        return created_date;
     }
 
-    public Integer getOrderNumber() {
-        return orderNumber;
+    public void setCreated_date(LocalDateTime created_date) {
+        this.created_date = created_date;
     }
 }

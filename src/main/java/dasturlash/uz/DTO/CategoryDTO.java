@@ -1,17 +1,35 @@
 package dasturlash.uz.DTO;
 
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
+
 public class CategoryDTO {
+
     private Integer id;
+
+    @NotNull(message = "orderNumber required")
+    @Min(value = 1, message = "orderNumber have to higher than 0")
     private Integer orderNumber;
+
+    @NotBlank(message = "nameUz required")
     private String nameUz;
+
+    @NotBlank(message = "nameRu required")
     private String nameRu;
+
+    @NotBlank(message = "nameEn required")
     private String nameEn;
-    private String key;
-    private Boolean visible;
+
+    @NotNull(message = "categoryKey required")
+    private Integer categoryKey;
+
     private LocalDateTime createdDate;
 
     public Integer getId() {
@@ -22,52 +40,44 @@ public class CategoryDTO {
         this.id = id;
     }
 
-    public Integer getOrderNumber() {
+    public @NotNull(message = "orderNumber required") @Min(value = 1, message = "orderNumber have to higher than 0") Integer getOrderNumber() {
         return orderNumber;
     }
 
-    public void setOrderNumber(Integer orderNumber) {
+    public void setOrderNumber(@NotNull(message = "orderNumber required") @Min(value = 1, message = "orderNumber have to higher than 0") Integer orderNumber) {
         this.orderNumber = orderNumber;
     }
 
-    public String getNameUz() {
+    public @NotBlank(message = "nameUz required") String getNameUz() {
         return nameUz;
     }
 
-    public void setNameUz(String nameUz) {
+    public void setNameUz(@NotBlank(message = "nameUz required") String nameUz) {
         this.nameUz = nameUz;
     }
 
-    public String getNameRu() {
+    public @NotBlank(message = "nameRu required") String getNameRu() {
         return nameRu;
     }
 
-    public void setNameRu(String nameRu) {
+    public void setNameRu(@NotBlank(message = "nameRu required") String nameRu) {
         this.nameRu = nameRu;
     }
 
-    public String getNameEn() {
+    public @NotBlank(message = "nameEn required") String getNameEn() {
         return nameEn;
     }
 
-    public void setNameEn(String nameEn) {
+    public void setNameEn(@NotBlank(message = "nameEn required") String nameEn) {
         this.nameEn = nameEn;
     }
 
-    public String getKey() {
-        return key;
+    public @NotNull(message = "categoryKey required") Integer getCategoryKey() {
+        return categoryKey;
     }
 
-    public void setKey(String key) {
-        this.key = key;
-    }
-
-    public Boolean getVisible() {
-        return visible;
-    }
-
-    public void setVisible(Boolean visible) {
-        this.visible = visible;
+    public void setCategoryKey(@NotNull(message = "categoryKey required") Integer categoryKey) {
+        this.categoryKey = categoryKey;
     }
 
     public LocalDateTime getCreatedDate() {

@@ -1,20 +1,11 @@
 package dasturlash.uz.DTO;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
 
-@Data
-@AllArgsConstructor
-public class SectionLangDTO {
+
+public class LangResponseDTO {
     private Integer id;
-    private String key;
+    private Integer key;
     private String name;
-
-    public SectionLangDTO(Integer id, String key, String name) {
-        this.id = id;
-        this.key = key;
-        this.name = name;
-    }
 
     public Integer getId() {
         return id;
@@ -24,11 +15,11 @@ public class SectionLangDTO {
         this.id = id;
     }
 
-    public String getKey() {
+    public Integer getKey() {
         return key;
     }
 
-    public void setKey(String key) {
+    public void setKey(Integer key) {
         this.key = key;
     }
 
@@ -40,4 +31,3 @@ public class SectionLangDTO {
         this.name = name;
     }
 }
-

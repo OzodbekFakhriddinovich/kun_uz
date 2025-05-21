@@ -1,42 +1,43 @@
 package dasturlash.uz.Controller;
 
 import dasturlash.uz.DTO.RegionDTO;
-import dasturlash.uz.DTO.RegionLangDTO;
+import dasturlash.uz.DTO.LangResponseDTO;
 import dasturlash.uz.Service.RegionService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
 @RestController
-@RequestMapping("/api/v1/region")
+@RequestMapping("/api/region")
 public class RegionController {
 
     @Autowired
-    private RegionService regionService;
+    private RegionService service;
 
-    @PostMapping("/create")
-    public RegionDTO create(@RequestBody RegionDTO dto) {
-        return regionService.create(dto);
+    @PostMapping("")
+    public ResponseEntity<RegionDTO> create(@Valid @RequestBody RegionDTO dto){
+        return ResponseEntity.ok(service.create(dto));
     }
 
-    @PutMapping("/update/{id}")
-    public RegionDTO update(@PathVariable Integer id, @RequestBody RegionDTO dto) {
-        return regionService.update(id, dto);
+    @PutMapping("/{id}")
+    public ResponseEntity<RegionDTO> update(@PathVariable("id") Integer id, @RequestBody RegionDTO newDto){
+        return ResponseEntity.ok(service.update(id, newDto));
     }
 
-    @DeleteMapping("/delete/{id}")
-    public boolean delete(@PathVariable Integer id) {
-        return regionService.delete(id);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Boolean> delete(@PathVariable Integer id){
+        return ResponseEntity.ok(service.delete(id));
     }
 
-    @GetMapping("/list")
-    public List<RegionDTO> getAll() {
-        return regionService.getAll();
+    @GetMapping("")
+    public ResponseEntity<List<RegionDTO>> get() {
+        return ResponseEntity.ok(service.getAll());
     }
 
-    @GetMapping("/lang/{lang}")
-    public List<RegionLangDTO> getByLang(@PathVariable String lang) {
-        return regionService.getByLang(lang);
+    @GetMapping("/lang")
+    public ResponseEntity<List<LangResponseDTO>> getByLang(@RequestParam String language) {
+        return ResponseEntity.ok(service.getAllbyLang(language));
     }
 }

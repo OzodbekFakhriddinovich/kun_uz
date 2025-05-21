@@ -9,8 +9,6 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.List;
 
 public interface RegionRepository extends CrudRepository<RegionEntity, Integer> {
-    List<RegionEntity> findAllByVisibleIsTrue();
-
     @Query("from RegionEntity where visible = true order by order_number")
     List<RegionEntity> findAllByOrder_numberSorted();
 }

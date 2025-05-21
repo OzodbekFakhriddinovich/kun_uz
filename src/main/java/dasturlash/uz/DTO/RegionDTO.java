@@ -23,9 +23,10 @@ public class RegionDTO {
     private String nameEn;
 
     @NotNull(message = "regionKey required")
-    private Integer regionKey;
+    private String regionKey;
 
     private LocalDateTime createdDate;
+
 
     public Integer getId() {
         return id;
@@ -67,13 +68,11 @@ public class RegionDTO {
         this.nameEn = nameEn;
     }
 
-    public @NotNull(message = "regionKey required") Integer getRegionKey() {
+    public @NotNull(message = "regionKey required") String getRegionKey() {
         return regionKey;
     }
 
-    public void setRegionKey(@NotNull(message = "regionKey required") Integer regionKey) {
-        this.regionKey = regionKey;
-    }
+
 
     public LocalDateTime getCreatedDate() {
         return createdDate;
@@ -81,5 +80,9 @@ public class RegionDTO {
 
     public void setCreatedDate(LocalDateTime createdDate) {
         this.createdDate = createdDate;
+    }
+
+    public void setRegionKey(@NotNull(message = "regionKey required") String regionKey) {
+        this.regionKey = regionKey;
     }
 }

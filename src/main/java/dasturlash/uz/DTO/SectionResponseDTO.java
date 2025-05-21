@@ -1,8 +1,6 @@
 package dasturlash.uz.DTO;
 
-
-
-public class LangResponseDTO {
+public class SectionResponseDTO {
     private Integer id;
     private String key;
     private String name;

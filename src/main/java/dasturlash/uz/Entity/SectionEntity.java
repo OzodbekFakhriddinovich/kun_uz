@@ -4,33 +4,33 @@ import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "Region")
-public class RegionEntity {
+import static org.springframework.data.jpa.domain.AbstractAuditable_.createdDate;
 
+@Entity
+@Table(name = "section")
+public class SectionEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(unique = true)
-    private Integer order_number;
+    @Column(name = "order_number")
+    private Integer orderNumber;
 
-    @Column
+    @Column(name = "name_uz")
     private String nameUz;
 
-    @Column
+    @Column(name = "name_ru")
     private String nameRu;
 
-    @Column
+    @Column(name = "name_en")
     private String nameEn;
 
-    @Column
-    private String regionKey;
+    @Column(unique = true)
+    private String key;
 
-    @Column(columnDefinition = "BOOLEAN DEFAULT TRUE")
     private Boolean visible = true;
 
-    @Column
+    @Column(name = "created_date")
     private LocalDateTime created_date;
 
     public Integer getId() {
@@ -41,12 +41,12 @@ public class RegionEntity {
         this.id = id;
     }
 
-    public Integer getOrder_number() {
-        return order_number;
+    public Integer getOrderNumber() {
+        return orderNumber;
     }
 
-    public void setOrder_number(Integer order_number) {
-        this.order_number = order_number;
+    public void setOrderNumber(Integer orderNumber) {
+        this.orderNumber = orderNumber;
     }
 
     public String getNameUz() {
@@ -73,12 +73,12 @@ public class RegionEntity {
         this.nameEn = nameEn;
     }
 
-    public String getRegionKey() {
-        return regionKey;
+    public String getKey() {
+        return key;
     }
 
-    public void setRegionKey(String regionKey) {
-        this.regionKey = regionKey;
+    public void setKey(String key) {
+        this.key = key;
     }
 
     public Boolean getVisible() {
@@ -97,3 +97,4 @@ public class RegionEntity {
         this.created_date = created_date;
     }
 }
+

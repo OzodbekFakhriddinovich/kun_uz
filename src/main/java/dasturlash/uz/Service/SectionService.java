@@ -6,6 +6,7 @@ import dasturlash.uz.EXP.AppBadException;
 import dasturlash.uz.EXP.NotFoundException;
 import dasturlash.uz.Entity.SectionEntity;
 import dasturlash.uz.Repository.SectionRepository;
+import dasturlash.uz.enums.AppLanguageEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,81 +15,73 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
+import static dasturlash.uz.enums.AppLanguageEnum.*;
+
 @Service
 public class SectionService {
 
     @Autowired
     private SectionRepository repository;
 
-    public SectionDTO create(SectionDTO dto) {
-        try {
-            SectionEntity entity = new SectionEntity();
-            entity.setOrderNumber(dto.getOrderNumber());
-            entity.setNameUz(dto.getNameUz());
-            entity.setNameRu(dto.getNameRu());
-            entity.setNameEn(dto.getNameEn());
-            entity.setKey(dto.getKey());
-            entity.setCreated_date(LocalDateTime.now());
-            entity.setVisible(true);
-
-            repository.save(entity);
-
-            dto.setId(entity.getId());
-            dto.setCreated_date(entity.getCreated_date());
-            return dto;
-
-        } catch (Exception e) {
-            if (e.getMessage().contains("unique constraint") || e.getMessage().contains("Duplicate entry")) {
-                throw new AppBadException("Section with order number " + dto.getOrderNumber() + " already exists");
-            }
-            throw e;
+    public SectionDTO create(SectionDTO dto){
+        Optional<SectionEntity> optional = repository.findBySectionKeyAndVisibleIsTrue(dto.getSectionKey());
+        if (optional.isPresent()) {
+            throw new AppBadException("Section key " + dto.getSectionKey() + " already exist");
         }
-    }
-
-    public SectionDTO update(Integer id, SectionDTO dto) {
-        Optional<SectionEntity> optional = repository.findById(id);
-        if (optional.isEmpty() || !optional.get().getVisible()) {
-            throw new NotFoundException("Section not found");
-        }
-
-        SectionEntity entity = optional.get();
+        SectionEntity entity = new SectionEntity();
         entity.setOrderNumber(dto.getOrderNumber());
         entity.setNameUz(dto.getNameUz());
         entity.setNameRu(dto.getNameRu());
         entity.setNameEn(dto.getNameEn());
-        entity.setKey(dto.getKey());
-
+        entity.setSectionKey(dto.getSectionKey());
+        entity.setCreatedDate(LocalDateTime.now());
+        entity.setImageId(dto.getImageId());
         repository.save(entity);
-
         dto.setId(entity.getId());
-        dto.setCreated_date(entity.getCreated_date());
+        dto.setCreatedDate(entity.getCreatedDate());
         return dto;
     }
 
-    public Boolean delete(Integer id) {
-        Optional<SectionEntity> optional = repository.findById(id);
-        if (optional.isEmpty() || !optional.get().getVisible()) {
-            throw new NotFoundException("Section not found");
+    public SectionDTO update(Integer id, SectionDTO newDto){
+        Optional<SectionEntity> optional = repository.findByIdAndVisibleIsTrue(id);
+        if (optional.isEmpty()){
+            throw new AppBadException("Section not found");
+        }
+
+        Optional<SectionEntity> keyOptional = repository.findBySectionKeyAndVisibleIsTrue(newDto.getSectionKey());
+        if (keyOptional.isPresent() && !keyOptional.get().getId().equals(id)){
+            throw new AppBadException("Section key present");
         }
 
         SectionEntity entity = optional.get();
-        entity.setVisible(false);
+        entity.setOrderNumber(newDto.getOrderNumber());
+        entity.setNameUz(newDto.getNameUz());
+        entity.setNameRu(newDto.getNameRu());
+        entity.setNameEn(newDto.getNameEn());
+        entity.setSectionKey(newDto.getSectionKey());
+        entity.setImageId(newDto.getImageId());
         repository.save(entity);
-        return true;
+        //response
+        newDto.setId(entity.getId());
+        return newDto;
     }
 
-    public List<SectionDTO> getAll() {
-        Iterable<SectionEntity> all = repository.findAllByVisibleTrueOrderByOrderNumberAsc();
-        List<SectionDTO> dtoList = new LinkedList<>();
-        all.forEach(entity -> dtoList.add(toDto(entity)));
-        return dtoList;
+    public Boolean delete(Integer id) {
+        return repository.updateVisibleById(id) == 1;
     }
 
-    public List<LangResponseDTO> getByLang(String lang) {
-        Iterable<SectionEntity> all = repository.findAllByVisibleTrueOrderByOrderNumberAsc();
-        List<LangResponseDTO> dtoList = new LinkedList<>();
-        all.forEach(entity -> dtoList.add(toLangDto(lang, entity)));
-        return dtoList;
+    public List<SectionDTO> getAllByOrder() {
+        Iterable<SectionEntity> iterable = repository.getAllByOrderSorted();
+        List<SectionDTO> dtos = new LinkedList<>();
+        iterable.forEach(entity -> dtos.add(toDto(entity)));
+        return dtos;
+    }
+
+    public List<LangResponseDTO> getAllByLang(AppLanguageEnum lang){
+        Iterable<SectionEntity> iterable = repository.getAllByOrderSorted();
+        List<LangResponseDTO> dtos = new LinkedList<>();
+        iterable.forEach(entity -> dtos.add(toLangResponseDto(lang, entity)));
+        return dtos;
     }
 
     private SectionDTO toDto(SectionEntity entity) {
@@ -98,23 +91,29 @@ public class SectionService {
         dto.setNameUz(entity.getNameUz());
         dto.setNameRu(entity.getNameRu());
         dto.setNameEn(entity.getNameEn());
-        dto.setKey(entity.getKey());
-        dto.setCreated_date(entity.getCreated_date());
+        dto.setSectionKey(entity.getSectionKey());
+        dto.setCreatedDate(entity.getCreatedDate());
+        dto.setImageId(entity.getImageId());
         return dto;
     }
 
-    private LangResponseDTO toLangDto(String lang, SectionEntity entity) {
+    private LangResponseDTO toLangResponseDto(AppLanguageEnum lang, SectionEntity entity){
         LangResponseDTO dto = new LangResponseDTO();
         dto.setId(entity.getId());
-        dto.setKey(entity.getKey());
-
-        switch (lang) {
-            case "uz" -> dto.setName(entity.getNameUz());
-            case "ru" -> dto.setName(entity.getNameRu());
-            case "en" -> dto.setName(entity.getNameEn());
+        dto.setKey(entity.getSectionKey());
+        switch (lang){
+            case UZ:
+                dto.setName(entity.getNameUz());
+                break;
+            case RU:
+                dto.setName(entity.getNameRu());
+                break;
+            case EN:
+                dto.setName(entity.getNameEn());
+                break;
         }
-
         return dto;
     }
+
 }
 

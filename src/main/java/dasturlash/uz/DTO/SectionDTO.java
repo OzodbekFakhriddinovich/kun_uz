@@ -1,15 +1,33 @@
 package dasturlash.uz.DTO;
 
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
 import java.time.LocalDateTime;
 
 public class SectionDTO {
     private Integer id;
+
+    @NotNull(message = "orderNumber required")
+    @Min(value = 1, message = "orderNumber have to higher than 0")
     private Integer orderNumber;
+
+    @NotBlank(message = "nameUz required")
     private String nameUz;
+
+    @NotBlank(message = "nameRu required")
     private String nameRu;
+
+    @NotBlank(message = "nameEn required")
     private String nameEn;
-    private String key;
-    private LocalDateTime created_date;
+
+    @NotNull(message = "sectionKey required")
+    private String SectionKey;
+
+    private LocalDateTime createdDate;
+
+    private String imageId;
 
     public Integer getId() {
         return id;
@@ -19,51 +37,59 @@ public class SectionDTO {
         this.id = id;
     }
 
-    public Integer getOrderNumber() {
+    public @NotNull(message = "orderNumber required") @Min(value = 1, message = "orderNumber have to higher than 0") Integer getOrderNumber() {
         return orderNumber;
     }
 
-    public void setOrderNumber(Integer orderNumber) {
+    public void setOrderNumber(@NotNull(message = "orderNumber required") @Min(value = 1, message = "orderNumber have to higher than 0") Integer orderNumber) {
         this.orderNumber = orderNumber;
     }
 
-    public String getNameUz() {
+    public @NotBlank(message = "nameUz required") String getNameUz() {
         return nameUz;
     }
 
-    public void setNameUz(String nameUz) {
+    public void setNameUz(@NotBlank(message = "nameUz required") String nameUz) {
         this.nameUz = nameUz;
     }
 
-    public String getNameRu() {
+    public @NotBlank(message = "nameRu required") String getNameRu() {
         return nameRu;
     }
 
-    public void setNameRu(String nameRu) {
+    public void setNameRu(@NotBlank(message = "nameRu required") String nameRu) {
         this.nameRu = nameRu;
     }
 
-    public String getNameEn() {
+    public @NotBlank(message = "nameEn required") String getNameEn() {
         return nameEn;
     }
 
-    public void setNameEn(String nameEn) {
+    public void setNameEn(@NotBlank(message = "nameEn required") String nameEn) {
         this.nameEn = nameEn;
     }
 
-    public String getKey() {
-        return key;
+    public @NotNull(message = "sectionKey required") String getSectionKey() {
+        return SectionKey;
     }
 
-    public void setKey(String key) {
-        this.key = key;
+    public void setSectionKey(@NotNull(message = "sectionKey required") String sectionKey) {
+        SectionKey = sectionKey;
     }
 
-    public void setCreated_date(LocalDateTime createdDate) {
-        this.created_date = createdDate;
+    public LocalDateTime getCreatedDate() {
+        return createdDate;
     }
 
-    public LocalDateTime getCreated_date() {
-        return created_date;
+    public void setCreatedDate(LocalDateTime createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public String getImageId() {
+        return imageId;
+    }
+
+    public void setImageId(String imageId) {
+        this.imageId = imageId;
     }
 }

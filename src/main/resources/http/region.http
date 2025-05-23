@@ -1,0 +1,15 @@
+### GET request to example server
+GET https://examples.http-client.intellij.net/get
+    ?generated-in=IntelliJ IDEA
+
+### Create Region
+POST localhost:8081/region
+Content-Type: application/json
+
+{
+  "orderNumber": 2,
+  "nameUz": "Buxoro",
+  "nameRu": "Бухара ",
+  "nameEn": "Bukhara",
+  "regionKey": "B89"
+}

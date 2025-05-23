@@ -2,4 +2,29 @@
 GET https://examples.http-client.intellij.net/get
     ?generated-in=IntelliJ IDEA
 
-###
+### Get Region List
+GET localhost:8081/api/region
+
+### Create Region
+POST localhost:8081/region
+Content-Type: application/json
+
+{
+  "orderNumber": 1,
+  "nameUz": "Sirdaryo",
+  "nameRu": "Сырдарья",
+  "nameEn": "Sirdarya",
+  "regionKey": "20"
+}
+
+### Update Region
+PUT localhost:8081/region1
+Content-Type: application/json
+
+{
+  "orderNumber": 1,
+  "nameUz": "Sirdaryo",
+  "nameRu": "Сырдарья",
+  "nameEn": "Sirdarya",
+  "key": "S20"
+}

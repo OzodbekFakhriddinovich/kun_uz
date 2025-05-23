@@ -7,31 +7,36 @@ import java.time.LocalDateTime;
 import static org.springframework.data.jpa.domain.AbstractAuditable_.createdDate;
 
 @Entity
-@Table(name = "section")
+@Table(name = "Section")
 public class SectionEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "order_number")
+    @Column
     private Integer orderNumber;
 
-    @Column(name = "name_uz")
+    @Column
     private String nameUz;
 
-    @Column(name = "name_ru")
+    @Column
     private String nameRu;
 
-    @Column(name = "name_en")
+    @Column
     private String nameEn;
 
-    @Column(unique = true)
-    private String key;
+    @Column()
+    private String sectionKey;
 
+    @Column
     private Boolean visible = true;
 
-    @Column(name = "created_date")
-    private LocalDateTime created_date;
+    @Column
+    private LocalDateTime createdDate;
+
+    @Column
+    private String imageId;
 
     public Integer getId() {
         return id;
@@ -73,12 +78,12 @@ public class SectionEntity {
         this.nameEn = nameEn;
     }
 
-    public String getKey() {
-        return key;
+    public String getSectionKey() {
+        return sectionKey;
     }
 
-    public void setKey(String key) {
-        this.key = key;
+    public void setSectionKey(String sectionKey) {
+        this.sectionKey = sectionKey;
     }
 
     public Boolean getVisible() {
@@ -89,12 +94,20 @@ public class SectionEntity {
         this.visible = visible;
     }
 
-    public LocalDateTime getCreated_date() {
-        return created_date;
+    public LocalDateTime getCreatedDate() {
+        return createdDate;
     }
 
-    public void setCreated_date(LocalDateTime created_date) {
-        this.created_date = created_date;
+    public void setCreatedDate(LocalDateTime createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public String getImageId() {
+        return imageId;
+    }
+
+    public void setImageId(String imageId) {
+        this.imageId = imageId;
     }
 }
 

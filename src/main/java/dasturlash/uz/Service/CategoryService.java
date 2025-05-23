@@ -1,10 +1,12 @@
 package dasturlash.uz.Service;
 
 import dasturlash.uz.DTO.CategoryDTO;
+import dasturlash.uz.DTO.LangResponseDTO;
 import dasturlash.uz.EXP.AppBadException;
 import dasturlash.uz.EXP.NotFoundException;
 import dasturlash.uz.Entity.CategoryEntity;
 import dasturlash.uz.Repository.CategoryRepository;
+import dasturlash.uz.enums.AppLanguageEnum;
 import jakarta.persistence.EntityManagerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,74 +21,93 @@ public class CategoryService {
 
     @Autowired
     private CategoryRepository repository;
-    @Autowired
-    private EntityManagerFactory entityManagerFactory;
 
-    public CategoryDTO create(CategoryDTO dto){
-        try {
-            CategoryEntity entity = new CategoryEntity();
-            entity.setOrder_number(dto.getOrderNumber());
-            entity.setNameUz(dto.getNameUz());
-            entity.setNameRu(dto.getNameRu());
-            entity.setNameEn(dto.getNameEn());
-            entity.setCategoryKey(dto.getCategoryKey());
-            entity.setCreated_date(LocalDateTime.now());
-            repository.save(entity);
-            dto.setId(entity.getId());
-            dto.setCreatedDate(entity.getCreated_date());
-            return dto;
-        }catch (Exception e){
-            if(e.getMessage().contains("unique constraint") || e.getMessage().contains("Duplicate entry")){
-                throw new AppBadException("Category with order number " + dto.getOrderNumber() + " already exists");
-            }
-            throw e;
+    public CategoryDTO create(CategoryDTO dto) {
+        Optional<CategoryEntity> optional = repository.findByCategoryKeyAndVisibleIsTrue(dto.getCategoryKey());
+        if (optional.isPresent()) {
+            throw new AppBadException("CategoryKey " + dto.getCategoryKey() + " already exist");
         }
+        CategoryEntity entity = new CategoryEntity();
+        entity.setOrderNumber(dto.getOrderNumber());
+        entity.setNameUz(dto.getNameUz());
+        entity.setNameRu(dto.getNameRu());
+        entity.setNameEn(dto.getNameEn());
+        entity.setCategoryKey(dto.getCategoryKey());
+        entity.setCreatedDate(LocalDateTime.now());
+        repository.save(entity);
+        //response
+        dto.setId(entity.getId());
+        dto.setCreatedDate(entity.getCreatedDate());
+        return dto;
     }
 
-    public CategoryDTO update(Integer id, CategoryDTO newDto){
-        Optional<CategoryEntity> optional = repository.findById(id);
-        if (optional.isEmpty() || optional.get().getVisible() == Boolean.FALSE){
-            throw new NotFoundException("Category not found");
+    public CategoryDTO update(Integer id, CategoryDTO newDto) {
+        Optional<CategoryEntity> optional = repository.findByIdAndVisibleIsTrue(id);
+        if (optional.isEmpty()) {
+            throw new AppBadException("Category not found");
+        }
+
+        Optional<CategoryEntity> keyOptional = repository.findByCategoryKeyAndVisibleIsTrue(newDto.getCategoryKey());
+        if (keyOptional.isPresent() && !id.equals(keyOptional.get().getId())) {
+            throw new AppBadException("Category key present");
         }
         CategoryEntity entity = optional.get();
-        entity.setOrder_number(newDto.getOrderNumber());
+        entity.setOrderNumber(newDto.getOrderNumber());
         entity.setNameUz(newDto.getNameUz());
         entity.setNameRu(newDto.getNameRu());
         entity.setNameEn(newDto.getNameEn());
         entity.setCategoryKey(newDto.getCategoryKey());
-        newDto.setId(entity.getId());
-        newDto.setCreatedDate(entity.getCreated_date());
         repository.save(entity);
+
+        newDto.setId(entity.getId());
         return newDto;
     }
 
-    public Boolean delete(Integer id){
-        Optional<CategoryEntity> optional = repository.findById(id);
-        if (optional.isEmpty() || optional.get().getVisible() == Boolean.FALSE){
-            throw new NotFoundException("Category not found");
-        }
-        CategoryEntity entity = optional.get();
-        entity.setVisible(Boolean.FALSE);
-        repository.save(entity);
-        return Boolean.TRUE;
+    public Boolean delete(Integer id) {
+        return repository.updateVisibleById(id) == 1;
     }
 
-    public List<CategoryDTO> getAllByOrder(){
+    public List<CategoryDTO> getAllByOrder() {
         Iterable<CategoryEntity> iterable = repository.getAllByOrderSorted();
         List<CategoryDTO> dtos = new LinkedList<>();
-        iterable.forEach( entity -> dtos.add(toDto(entity)));
+        iterable.forEach(entity -> dtos.add(toDto(entity)));
         return dtos;
     }
 
-    private CategoryDTO toDto(CategoryEntity entity){
+    public List<LangResponseDTO> getAllByLang(AppLanguageEnum lang) {
+        Iterable<CategoryEntity> iterable = repository.getAllByOrderSorted();
+        List<LangResponseDTO> dtos = new LinkedList<>();
+        iterable.forEach(entity -> dtos.add(toLangResponseDto(lang, entity)));
+        return dtos;
+    }
+
+    private CategoryDTO toDto(CategoryEntity entity) {
         CategoryDTO dto = new CategoryDTO();
         dto.setId(entity.getId());
-        dto.setOrderNumber(entity.getOrder_number());
+        dto.setOrderNumber(entity.getOrderNumber());
         dto.setNameUz(entity.getNameUz());
         dto.setNameRu(entity.getNameRu());
         dto.setNameEn(entity.getNameEn());
         dto.setCategoryKey(entity.getCategoryKey());
-        dto.setCreatedDate(entity.getCreated_date());
+        dto.setCreatedDate(entity.getCreatedDate());
+        return dto;
+    }
+
+    private LangResponseDTO toLangResponseDto(AppLanguageEnum lang, CategoryEntity entity) {
+        LangResponseDTO dto = new LangResponseDTO();
+        dto.setId(entity.getId());
+        dto.setKey(entity.getCategoryKey());
+        switch (lang) {
+            case UZ:
+                dto.setName(entity.getNameUz());
+                break;
+            case RU:
+                dto.setName(entity.getNameRu());
+                break;
+            case EN:
+                dto.setName(entity.getNameEn());
+                break;
+        }
         return dto;
     }
 }

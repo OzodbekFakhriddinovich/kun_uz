@@ -1,8 +1,7 @@
 package dasturlash.uz.Entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+
 
 import java.time.LocalDateTime;
 
@@ -15,8 +14,8 @@ public class CategoryEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(unique = true)
-    private Integer order_number;
+    @Column
+    private Integer orderNumber;
 
     @Column
     private String nameUz;
@@ -27,14 +26,14 @@ public class CategoryEntity {
     @Column
     private String nameEn;
 
-    @Column
-    private Integer categoryKey;
+    @Column()
+    private String categoryKey;
 
-    @Column(columnDefinition = "BOOLEAN DEFAULT TRUE")
+    @Column
     private Boolean visible = true;
 
     @Column
-    private LocalDateTime created_date;
+    private LocalDateTime createdDate;
 
     public Integer getId() {
         return id;
@@ -44,12 +43,12 @@ public class CategoryEntity {
         this.id = id;
     }
 
-    public Integer getOrder_number() {
-        return order_number;
+    public Integer getOrderNumber() {
+        return orderNumber;
     }
 
-    public void setOrder_number(Integer order_number) {
-        this.order_number = order_number;
+    public void setOrderNumber(Integer orderNumber) {
+        this.orderNumber = orderNumber;
     }
 
     public String getNameUz() {
@@ -76,11 +75,11 @@ public class CategoryEntity {
         this.nameEn = nameEn;
     }
 
-    public Integer getCategoryKey() {
+    public String getCategoryKey() {
         return categoryKey;
     }
 
-    public void setCategoryKey(Integer categoryKey) {
+    public void setCategoryKey(String categoryKey) {
         this.categoryKey = categoryKey;
     }
 
@@ -92,11 +91,11 @@ public class CategoryEntity {
         this.visible = visible;
     }
 
-    public LocalDateTime getCreated_date() {
-        return created_date;
+    public LocalDateTime getCreatedDate() {
+        return createdDate;
     }
 
-    public void setCreated_date(LocalDateTime created_date) {
-        this.created_date = created_date;
+    public void setCreatedDate(LocalDateTime createdDate) {
+        this.createdDate = createdDate;
     }
 }

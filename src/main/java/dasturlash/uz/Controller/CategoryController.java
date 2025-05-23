@@ -1,7 +1,9 @@
 package dasturlash.uz.Controller;
 
 import dasturlash.uz.DTO.CategoryDTO;
+import dasturlash.uz.DTO.LangResponseDTO;
 import dasturlash.uz.Service.CategoryService;
+import dasturlash.uz.enums.AppLanguageEnum;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +36,11 @@ public class CategoryController {
     @GetMapping("")
     public ResponseEntity<List<CategoryDTO>> getAllByOrder(){
         return ResponseEntity.ok(service.getAllByOrder());
+    }
+
+    @GetMapping("/lang")
+    public ResponseEntity<List<LangResponseDTO>> getByLang(@RequestParam AppLanguageEnum language) {
+        return ResponseEntity.ok(service.getAllByLang(language));
     }
 }
 

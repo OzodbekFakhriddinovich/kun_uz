@@ -28,7 +28,7 @@ public class CategoryDTO {
     private String nameEn;
 
     @NotNull(message = "categoryKey required")
-    private Integer categoryKey;
+    private String categoryKey;
 
     private LocalDateTime createdDate;
 
@@ -72,11 +72,11 @@ public class CategoryDTO {
         this.nameEn = nameEn;
     }
 
-    public @NotNull(message = "categoryKey required") Integer getCategoryKey() {
+    public @NotNull(message = "categoryKey required") String getCategoryKey() {
         return categoryKey;
     }
 
-    public void setCategoryKey(@NotNull(message = "categoryKey required") Integer categoryKey) {
+    public void setCategoryKey(@NotNull(message = "categoryKey required") String categoryKey) {
         this.categoryKey = categoryKey;
     }
 

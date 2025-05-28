@@ -7,6 +7,7 @@ import dasturlash.uz.Entity.ProfileEntity;
 import dasturlash.uz.Repository.ProfileRepository;
 import dasturlash.uz.enums.ProfileStatus;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -18,6 +19,9 @@ public class ProfileService {
     @Autowired
     private ProfileRoleService profileRoleService;
 
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
     public ProfileDTO create(ProfileDTO profile) {
         Optional<ProfileEntity> optional = profileRepository.findByUsernameAndVisibleIsTrue(profile.getUsername());
         if (optional.isPresent()) {
@@ -26,7 +30,7 @@ public class ProfileService {
         ProfileEntity entity = new ProfileEntity();
         entity.setName(profile.getName());
         entity.setSurname(profile.getSurname());
-        entity.setPassword(profile.getPassword()); // TODO MD5/ByCript
+        entity.setPassword(bCryptPasswordEncoder.encode(profile.getPassword())); // TODO MD5/ByCript
         entity.setUsername(profile.getUsername());
         entity.setStatus(ProfileStatus.ACTIVE);
         entity.setVisible(Boolean.TRUE);

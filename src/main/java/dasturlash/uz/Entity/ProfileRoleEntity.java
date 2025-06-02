@@ -14,6 +14,7 @@ public class ProfileRoleEntity {
 
     @Column(name = "profile_id")
     private Integer profileId;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "profile_id", insertable = false, updatable = false, nullable = false)
     private ProfileEntity profile;
@@ -53,5 +54,7 @@ public class ProfileRoleEntity {
     public void setRoles(ProfileRoleEnum roles) {
         this.roles = roles;
     }
+
+
 }
 

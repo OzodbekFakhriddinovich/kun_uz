@@ -9,5 +9,6 @@ public interface ProfileRepository extends CrudRepository<ProfileEntity, Integer
     // where username = ? and visible = true
     Optional<ProfileEntity> findByUsernameAndVisibleIsTrue(String username);
     Optional<ProfileEntity> findByIdAndVisibleIsTrue(Integer id);
+
 }
 

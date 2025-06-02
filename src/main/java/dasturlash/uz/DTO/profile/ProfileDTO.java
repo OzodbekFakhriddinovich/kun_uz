@@ -94,4 +94,6 @@ public class ProfileDTO {
     public void setPhotoId(String photoId) {
         this.photoId = photoId;
     }
+
+
 }

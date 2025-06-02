@@ -1,0 +1,32 @@
+###
+POST http://localhost:8081/api/article
+Content-Type: application/json
+
+{
+  "title": "Texnologik inqilob haqida maqola",
+  "description": "Bu maqolada texnologik inqilobning zamonaviy jamiyatga ta’siri yoritiladi.",
+  "content": "Zamonaviy texnologiyalar hayotimizning har bir sohasiga kirib keldi. Sun’iy intellekt, IoT va 5G texnologiyalari bu inqilobning asosiy harakatlantiruvchi kuchlaridir...",
+  "imageId": "img123456",
+  "regionId": 1,
+  "categoryList": [2, 4],
+  "sectionList": [1, 3]
+}
+
+
+###
+PUT http://localhost:8081/api/article/3
+Content-Type: application/json
+
+{
+  "title": "Yangi sarlavha",
+  "description": "Yangi tavsif",
+  "content": "Yangi kontent...",
+  "imageId": "newImageId456",
+  "regionId": 2,
+  "categoryList": [1],
+  "sectionList": [2]
+}
+
+
+###
+DELETE http://localhost:8081/api/article/3

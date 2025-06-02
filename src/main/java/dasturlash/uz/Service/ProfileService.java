@@ -6,6 +6,7 @@ import dasturlash.uz.EXP.AppBadException;
 import dasturlash.uz.Entity.ProfileEntity;
 import dasturlash.uz.Repository.ProfileRepository;
 import dasturlash.uz.enums.ProfileStatus;
+import dasturlash.uz.enums.ProfileStatusEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -32,7 +33,7 @@ public class ProfileService {
         entity.setSurname(profile.getSurname());
         entity.setPassword(bCryptPasswordEncoder.encode(profile.getPassword())); // TODO MD5/ByCript
         entity.setUsername(profile.getUsername());
-        entity.setStatus(ProfileStatus.ACTIVE);
+        entity.setStatus(ProfileStatusEnum.ACTIVE.ACTIVE);
         entity.setVisible(Boolean.TRUE);
         profileRepository.save(entity); // save
         // role_save

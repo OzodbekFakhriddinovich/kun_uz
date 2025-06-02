@@ -1,18 +1,18 @@
 package dasturlash.uz.Entity;
-
+import dasturlash.uz.enums.ProfileRoleEnum;
 import dasturlash.uz.enums.ProfileStatus;
+import dasturlash.uz.enums.ProfileStatusEnum;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
 
 
 @Entity
 @Table(name = "profile")
 public class ProfileEntity {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -29,8 +29,9 @@ public class ProfileEntity {
     @Column(name = "password", nullable = false)
     private String password;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "status")
-    private ProfileStatus status = ProfileStatus.ACTIVE;
+    private ProfileStatusEnum status = ProfileStatusEnum.ACTIVE;
 
     @Column(name = "photo_id")
     private String photoId;
@@ -39,12 +40,9 @@ public class ProfileEntity {
     private Boolean visible = true;
 
     @CreationTimestamp
-    @Setter(AccessLevel.NONE)
     private LocalDateTime createdDate;
-
-//    @OneToMany(mappedBy = "profile")
-//    private List<ProfileRoleEntity> roleList;
-
+    @OneToMany(mappedBy = "profile")
+    private List<ProfileRoleEntity> roleList;
 
     public Integer getId() {
         return id;
@@ -86,11 +84,11 @@ public class ProfileEntity {
         this.password = password;
     }
 
-    public ProfileStatus getStatus() {
+    public ProfileStatusEnum getStatus() {
         return status;
     }
 
-    public void setStatus(ProfileStatus status) {
+    public void setStatus(ProfileStatusEnum status) {
         this.status = status;
     }
 
@@ -117,4 +115,15 @@ public class ProfileEntity {
     public void setCreatedDate(LocalDateTime createdDate) {
         this.createdDate = createdDate;
     }
+
+    public List<ProfileRoleEntity> getRoleList() {
+        return getRoleList();
+    }
+
+    private ProfileRoleEnum roles;
+
+    public ProfileRoleEnum getRoles() {
+        return roles;
+    }
+
 }
